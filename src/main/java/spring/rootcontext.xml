@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns ="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mybatis-spring="http://mybatis.org/schema/mybatis-spring"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+           http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+           http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring-2.0.xsd
+       ">
+
+    <!-- Root Context: defines shared resources visible to all other web components-->
+
+    <!-- HikariCP 추가 -->
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver">
+        </property>
+
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/aaaa?serverTimezone=Asia/Seoul">
+        </property>
+
+        <property name="username" value="사용자명">
+        </property>
+
+        <property name="password" value="비밀번호">
+        </property>
+    </bean>
+    <bean id="datasource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+        <constructor-arg ref="hikariConfig">
+        </constructor-arg>
+    </bean>
+    <!-- MyBatis 추가 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="datasource">
+        </property>
+    </bean>
+    <!-- MyBatis mapper 추가 -->
+    <mybatis-spring:scan base-package="com.example.Member.mapper"/>
+
+</beans>
